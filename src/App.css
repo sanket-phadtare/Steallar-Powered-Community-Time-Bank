@@ -154,7 +154,7 @@ html, body, #root {
 /* ── Main grid ── */
 .dashboard {
   display: grid;
-  grid-template-columns: 220px 1fr 1fr 220px;
+  grid-template-columns: 330px 1fr 1fr 220px;
   gap: 0;
   flex: 1;
   overflow: hidden;
@@ -164,6 +164,7 @@ html, body, #root {
 .panel {
   border-right: 1px solid var(--panel-border);
   display: flex;
+   min-width: 0;
   flex-direction: column;
   overflow: hidden;
 }
@@ -183,6 +184,7 @@ html, body, #root {
 .panel-body {
   padding: 20px;
   flex: 1;
+  overflow-x: hidden;      /* ← kills horizontal scroll */
   overflow-y: auto;
   display: flex;
   flex-direction: column;
@@ -918,15 +920,15 @@ html, body, #root {
 }
 
 /* ── Register banner ── */
-.register-banner {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  flex: 1;
-  gap: 16px;
-  padding: 40px;
-  text-align: center;
+.register-banner p {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: #444444;
+  -webkit-text-fill-color: #444444;
+  letter-spacing: 0.05em;
+  line-height: 1.7;
+  max-width: 320px;
+  white-space: nowrap;   /* ← add this */
 }
 .register-banner p {
   font-family: var(--mono);
@@ -942,7 +944,7 @@ html, body, #root {
   font-size: 10px;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  padding: 11px 24px;
+  padding: 9px 20px;           /* ← slimmer vertical padding */
   background: rgba(255, 255, 255, 0.06);
   border: 1px solid rgba(255, 255, 255, 0.2);
   color: #ffffff;
@@ -950,6 +952,8 @@ html, body, #root {
   cursor: pointer;
   border-radius: var(--radius);
   transition: all 0.15s;
+  white-space: nowrap;         /* ← prevents text wrapping to multiple lines */
+  width: fit-content;          /* ← shrinks to text width instead of stretching */
 }
 .btn-register:hover {
   background: rgba(255, 255, 255, 0.1);
@@ -1036,3 +1040,116 @@ a:hover {
   background: #161616;
   border-color: #333333;
 }
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.85); }
+}
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+   background: transparent;  /* dim but see-through */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  backdrop-filter: none;
+  /* No pointer-events block — background is visible */
+}
+
+.modal-box {
+  position: relative;
+  background: #1a1a1a;
+  border: 1px solid #2e2e2e;
+  border-radius: 16px;
+  padding: 2.5rem 2rem 2rem;
+  width: 100%;
+  max-width: 340px;
+  text-align: center;
+  animation: modalPop 0.2s ease-out;
+}
+
+@keyframes modalPop {
+  from { opacity: 0; transform: scale(0.93); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+.modal-close {
+  position: absolute;
+  top: 14px;
+  right: 16px;
+  background: none;
+  border: none;
+  color: #555;
+  font-size: 16px;
+  cursor: pointer;
+  line-height: 1;
+  transition: color 0.15s;
+}
+
+.modal-close:hover { color: #aaa; }
+
+.modal-icon {
+  width: 58px;
+  height: 58px;
+  background: linear-gradient(135deg, #4f46e5, #7c3aed);
+  border-radius: 50%;
+  margin: 0 auto 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-title {
+  color: #fff;
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  margin: 0 0 0.4rem;
+}
+
+.modal-subtitle {
+  color: #777;
+  font-size: 13px;
+  line-height: 1.5;
+  margin: 0 0 1.75rem;
+}
+
+.modal-error {
+  color: #f87171;
+  font-size: 12px;
+  margin: -1rem 0 1rem;
+}
+
+.modal-connect-btn {
+  width: 100%;
+  padding: 11px;
+  background: #fff;
+  color: #000;
+  border: none;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  cursor: pointer;
+  margin-bottom: 10px;
+  transition: background 0.15s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 42px;
+}
+
+.modal-connect-btn:hover:not(:disabled) { background: #e2e2e2; }
+.modal-connect-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.modal-cancel-btn {
+  background: none;
+  border: none;
+  color: #555;
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  transition: color 0.15s;
+}
+
+.modal-cancel-btn:hover { color: #999; }
